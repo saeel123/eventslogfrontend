@@ -26,5 +26,16 @@ export const fetchEvents = (page, limit) => {
     return dispatch => {
         console.log(page);
         console.log(limit);
+
+        dispatch(fetchEventsStart());
+        const queryParams = '?limit=' + limit + '&page=' + page + '&sortBy=event_created_at:desc'
+            axios.get('/event'+queryParams).then(response => {
+            const fetchEvents = response.data;
+            dispatch(fetchEventsSuccess(fetchEvents));
+        }).catch(error => {
+            dispatch(fetchEventsFail(error));
+        })
+
+
     }
 }
