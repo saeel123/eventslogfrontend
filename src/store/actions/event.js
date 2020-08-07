@@ -24,8 +24,6 @@ export const fetchEventsStart = () => {
 
 export const fetchEvents = (page, limit) => {
     return dispatch => {
-        console.log(page);
-        console.log(limit);
 
         dispatch(fetchEventsStart());
         const queryParams = '?limit=' + limit + '&page=' + page + '&sortBy=event_created_at:desc'
