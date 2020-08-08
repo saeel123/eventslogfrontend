@@ -13,12 +13,6 @@ import ReactPaginate from 'react-paginate';
 import Search from '../../components/Search/Search';
 
 class Dashboard extends Component {
-    state = {
-            offset: 0,
-            data: [],
-            perPage: 10,
-    }
-
     componentDidMount() {
         this.props.onFetchEvents(1, 10);
     }

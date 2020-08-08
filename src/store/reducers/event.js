@@ -22,7 +22,7 @@ const fetchEventsrSuccess = (state, action) => {
         loading: false,
         resultCount: action.resultCount,
         totalCount: action.totalCount,
-        pages: action.resultCount/ action.limit,
+        pages: action.resultCount/action.limit,
         limit: action.limit
     });
 }

@@ -30,20 +30,13 @@ export const fetchEvents = (page, limit) => {
 
         dispatch(fetchEventsStart());
         const queryParams = '?limit=' + limit + '&page=' + page + '&sortBy=event_created_at:desc'
-            axios.get('/event'+queryParams).then(response => {
-            
-            console.log(response);
-            
-            
+            axios.get('/event'+queryParams).then(response => {    
             const fetchEvents = response.data.data;
             const resultCount = response.data.count;
             const totalCount = response.data.total_count;
-
             dispatch(fetchEventsSuccess(fetchEvents, resultCount, totalCount, limit ));
         }).catch(error => {
             dispatch(fetchEventsFail(error));
         })
-
-
     }
 }
