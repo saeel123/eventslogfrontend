@@ -17,8 +17,6 @@ class Dashboard extends Component {
             offset: 0,
             data: [],
             perPage: 10,
-            currentPage: 0,
-            pageCount: 454
     }
 
     componentDidMount() {
@@ -29,7 +27,6 @@ class Dashboard extends Component {
         const selectedPage = e.selected;
         this.props.onFetchEvents( selectedPage + 1, 10);
     };
-  
 
     render() {
         let events = <Spinner />;
@@ -63,31 +60,26 @@ class Dashboard extends Component {
         }
 
         return (
-            <div>
+            <Container>
                   <Search/>
-                <div>
-                <Container>
-              
-              <Row>
-                  {events}
-                  <ReactPaginate
-                      previousLabel={"prev"}
-                      nextLabel={"next"}
-                      breakLabel={"..."}
-                      breakClassName={"break-me"}
-                      pageCount={this.state.pageCount}
-                      marginPagesDisplayed={2}
-                      pageRangeDisplayed={5}
-                      onPageChange={this.handlePageClick}
-                      containerClassName={"pagination"}
-                      subContainerClassName={"pages pagination"}
-                      activeClassName={"active"}/>
-              </Row>
-          </Container>
-                </div>
-            </div>
-            
-            
+                    <div>
+                        <Row>
+                            {events}
+                            <ReactPaginate
+                                previousLabel={"prev"}
+                                nextLabel={"next"}
+                                breakLabel={"..."}
+                                breakClassName={"break-me"}
+                                pageCount={this.props.pages}
+                                marginPagesDisplayed={2}
+                                pageRangeDisplayed={5}
+                                onPageChange={this.handlePageClick}
+                                containerClassName={"pagination"}
+                                subContainerClassName={"pages pagination"}
+                                activeClassName={"active"}/>
+                        </Row>
+                    </div>
+            </Container>
         )
     }
 }
@@ -96,7 +88,11 @@ class Dashboard extends Component {
 const mapStateToProps = state => {
     return {
         events: state.event.events,
+        resultCount: state.event.resultCount,
+        totalCount: state.event.totalCount,
         loading: state.event.loading,
+        pages: state.event.pages,
+        limit: state.event.limit,
     }
 }
 

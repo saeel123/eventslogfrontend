@@ -3,7 +3,11 @@ import { updateObject } from '../utility';
 
 const initialState = {
     events: [],
-    loading: false
+    loading: false,
+    resultCount: null,
+    totalCount: null,
+    pages: null,
+    limit: null,
 }
 
 const fetchEventsStart = (state, action) => {
@@ -16,6 +20,10 @@ const fetchEventsrSuccess = (state, action) => {
     return updateObject(state, {
         events: action.events,
         loading: false,
+        resultCount: action.resultCount,
+        totalCount: action.totalCount,
+        pages: action.resultCount/ action.limit,
+        limit: action.limit
     });
 }
 
