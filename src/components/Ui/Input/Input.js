@@ -1,8 +1,5 @@
 import React from 'react';
 import classes from './Input.module.css';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-
 
 const input = (props) => {
     let inputElement =  null;
@@ -15,13 +12,37 @@ const input = (props) => {
     switch (props.elementType) {
 
         case ('input'):
-            inputElement = <Form.Control 
+            inputElement = <input 
                                 onChange={props.changed}
                                 className={inputClasses.join(' ')}
                                 {...props.elementConfig} 
                                 value={props.value} 
                             />
             break;
+        
+        case ('textarea'):
+            inputElement = <textarea 
+                                onChange={props.changed}
+                                className={classes.InputElement}
+                                {...props.elementConfig} 
+                                value={props.value} 
+                            />
+            break;
+
+            case ('select'):
+                inputElement = (
+                    <select
+                        className={classes.InputElement}
+                        value={props.value}
+                        onChange={props.changed}>
+                        {props.elementConfig.options.map(option => (
+                            <option key={option.value} value={option.value}>
+                                {option.displayValue}
+                            </option>
+                        ))}
+                    </select>
+                );
+                break;
         default:
             inputElement = <input 
                                 onChange={props.changed}
@@ -34,10 +55,8 @@ const input = (props) => {
 
     return (
         <div className={classes.Input}>
-            <Form.Group>
-                <Form.Label className={classes.Label}>{props.label}</Form.Label>
-                {inputElement}
-            </Form.Group>
+            <label className={classes.Label}>{props.label}</label>
+            {inputElement}
         </div>
     );
 }

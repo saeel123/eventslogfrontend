@@ -10,6 +10,8 @@ import * as actionsCreators from  '../../store/actions/index';
 import Spinner from '../../components/Spinner/Spinner';
 import ReactPaginate from 'react-paginate';
 
+import Search from '../../components/Search/Search';
+
 class Dashboard extends Component {
     state = {
             offset: 0,
@@ -25,15 +27,7 @@ class Dashboard extends Component {
 
     handlePageClick = (e) => {
         const selectedPage = e.selected;
-        // const offset = selectedPage * this.state.perPage;
-  
-        // this.setState({
-        //     currentPage: selectedPage,
-        //     offset: offset
-        // });
-
         this.props.onFetchEvents( selectedPage + 1, 10);
-  
     };
   
 
@@ -65,30 +59,34 @@ class Dashboard extends Component {
                                 {dataevents}
                             </tbody>
                         </Table>
-                      
-
                     </div>    
         }
 
         return (
-            <Container>
-                <Row>
-                    {events}
-
-                    <ReactPaginate
-                  previousLabel={"prev"}
-                  nextLabel={"next"}
-                  breakLabel={"..."}
-                  breakClassName={"break-me"}
-                  pageCount={this.state.pageCount}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  onPageChange={this.handlePageClick}
-                  containerClassName={"pagination"}
-                  subContainerClassName={"pages pagination"}
-                  activeClassName={"active"}/>
-                </Row>
-            </Container>
+            <div>
+                  <Search/>
+                <div>
+                <Container>
+              
+              <Row>
+                  {events}
+                  <ReactPaginate
+                      previousLabel={"prev"}
+                      nextLabel={"next"}
+                      breakLabel={"..."}
+                      breakClassName={"break-me"}
+                      pageCount={this.state.pageCount}
+                      marginPagesDisplayed={2}
+                      pageRangeDisplayed={5}
+                      onPageChange={this.handlePageClick}
+                      containerClassName={"pagination"}
+                      subContainerClassName={"pages pagination"}
+                      activeClassName={"active"}/>
+              </Row>
+          </Container>
+                </div>
+            </div>
+            
             
         )
     }
