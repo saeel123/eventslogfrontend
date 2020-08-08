@@ -8,6 +8,15 @@ import { connect } from 'react-redux';
 import * as actionsCreators from  '../../store/actions/index';
 
 import RButton from 'react-bootstrap/Button';
+import Jumbotron from 'react-bootstrap/Jumbotron';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import './Search.css';
+
+
+
+
 
 
 
@@ -145,32 +154,57 @@ class Search extends Component {
             <form onSubmit={this.orderHandler}>
                 {
                     formElementArray.map(formElement => (
-                        <Input  key={formElement.id}
-                                elementType={formElement.config.elementType} 
-                                elementConfig={formElement.config.elementConfig}  
-                                changed={(event) => this.inputChangedHadler(event.target.value, formElement.id)}
-                                invalid={!formElement.config.isValid}
-                                touched={formElement.config.touched}
-                                shouldValidate={formElement.config.validation}
-                                value={formElement.config.value}/>
+
+                       
+                        <Form.Group as={Row} controlId="formHorizontalEmail" key={formElement.id}>
+                            <Form.Label className={'search-label'} column sm={2}>
+                                Search Event
+                            </Form.Label>
+                            <Col className={'search-input'} sm={10}>
+                                <Input  
+                                    elementType={formElement.config.elementType} 
+                                    elementConfig={formElement.config.elementConfig}  
+                                    changed={(event) => this.inputChangedHadler(event.target.value, formElement.id)}
+                                    invalid={!formElement.config.isValid}
+                                    touched={formElement.config.touched}
+                                    shouldValidate={formElement.config.validation}
+                                    value={formElement.config.value}/>
+                            </Col>
+                        </Form.Group>
                     ))
                 }
-
-                <DateTimePicker
-                        onChange={this.onChangeFrom}
-                        value={this.state.fromDateTime}
-                        />
                 
-                
-                <DateTimePicker
-                        onChange={this.onChangeTo}
-                        value={this.state.toDateTime}
-                        />
+           
+                    <Form.Group as={Row} controlId="formHorizontalEmail">
+                        <Form.Label column sm={2}>
+                            From Date
+                        </Form.Label>
+                        <Col sm={10}>
+                            <DateTimePicker
+                                    onChange={this.onChangeFrom}
+                                    value={this.state.fromDateTime}
+                                    />
+                        </Col>
+                    </Form.Group>
 
-                
-                <Button type="submit" btnType="Success">Submit</Button>
-                <RButton variant="danger" onClick={this.resetHandler}>Reset</RButton> 
-
+                    <Form.Group as={Row} controlId="formHorizontalEmail">
+                        <Form.Label column sm={2}>
+                            To Date
+                        </Form.Label>
+                        <Col sm={10}>
+                            <DateTimePicker
+                                        onChange={this.onChangeTo}
+                                        value={this.state.toDateTime}
+                                        />
+                        </Col>
+                    </Form.Group>
+            
+                <Row>
+                    <Col>
+                        <Button type="submit" btnType="Success">Submit</Button>
+                        <RButton className={'button-space'} variant="danger" onClick={this.resetHandler}>Reset</RButton> 
+                    </Col>
+                </Row>
             </form>
         );
 
@@ -181,11 +215,17 @@ class Search extends Component {
 
         return (
             <div>
-                <div>
-                    <h3>Search Events</h3>
-                    {form}
-                </div>
+                <h2>Events</h2>
+                <Jumbotron >
+                    <div>
+                        <div>
+                        
+                            {form}
+                        </div>
+                    </div>
+                </Jumbotron>
             </div>
+            
         )
     }
 

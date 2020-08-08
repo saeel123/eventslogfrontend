@@ -78,7 +78,7 @@ class Dashboard extends Component {
                         </Row>
                     </div>
                 </Container>
-                <footer class="footer mt-auto py-3">
+                <footer className={'footer mt-auto py-3'}>
                     <address>
                         Developed By <a href="mailto:saeelmacman123@gmail.com">Saeel Parulekar</a>
                         </address>
