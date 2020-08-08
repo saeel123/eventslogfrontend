@@ -2,6 +2,8 @@ import React , { Component } from 'react';
 import Button from '../../components/Ui/Button/Button';
 import Input from '../../components/Ui/Input/Input';
 import Spinner from '../../components/Spinner/Spinner';
+import DateTimePicker from 'react-datetime-picker';
+
 
 
 
@@ -35,6 +37,8 @@ class Search extends Component {
         },
         loading: false,
         formIsValid: false,
+        toDateTime: new Date(),
+        fromDateTime: new Date(),
 
     }
 
@@ -80,9 +84,25 @@ class Search extends Component {
         event.preventDefault();
         const search = this.state.controls.search.value;
         const verbType = this.state.controls.verbType.value;
+        const toDate = null;
+        const fromDate = null;
+
+
 
         console.log(search);
         console.log(verbType);
+        console.log(new Date(this.state.toDateTime).getTime() / 1000);
+        console.log(new Date(this.state.fromDateTime).getTime() / 1000);
+    }
+       
+
+    onChangeFrom = (date) => {
+        this.setState({ fromDateTime: date })
+
+    }
+
+    onChangeTo = (date) => {
+        this.setState({ toDateTime: date })
     }
 
     render() {
@@ -108,6 +128,19 @@ class Search extends Component {
                                 value={formElement.config.value}/>
                     ))
                 }
+
+                <DateTimePicker
+                        onChange={this.onChangeFrom}
+                        value={this.state.fromDateTime}
+                        />
+                
+                
+                <DateTimePicker
+                        onChange={this.onChangeTo}
+                        value={this.state.toDateTime}
+                        />
+
+
                 <Button type="submit" btnType="Success">Submit</Button>
             </form>
         );
