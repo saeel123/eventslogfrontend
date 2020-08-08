@@ -11,6 +11,8 @@ import Spinner from '../../components/Spinner/Spinner';
 import ReactPaginate from 'react-paginate';
 
 import Search from '../../components/Search/Search';
+import Navigation from '../../components/Navigation/Navigation';
+
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -54,8 +56,10 @@ class Dashboard extends Component {
         }
 
         return (
-            <Container>
-                  <Search/>
+            <div>
+                 <Navigation/>
+                <Container>
+                    <Search/>
                     <div>
                         <Row>
                             {events}
@@ -73,7 +77,15 @@ class Dashboard extends Component {
                                 activeClassName={"active"}/>
                         </Row>
                     </div>
-            </Container>
+                </Container>
+                <footer class="footer mt-auto py-3">
+                    <address>
+                        Developed By <a href="mailto:saeelmacman123@gmail.com">Saeel Parulekar</a>
+                        </address>
+                </footer>
+            </div>
+
+            
         )
     }
 }
