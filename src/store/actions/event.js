@@ -29,6 +29,15 @@ export const fetchEvents = (page, limit) => {
     return dispatch => {
 
         dispatch(fetchEventsStart());
+
+        const searchString = localStorage.getItem('searchString');
+        const toDateTime = localStorage.getItem('toDateTime');
+        const fromDateTime = localStorage.getItem('fromDateTime');
+
+        console.log(searchString);
+        console.log(toDateTime);
+        console.log(fromDateTime);
+
         const queryParams = '?limit=' + limit + '&page=' + page + '&sortBy=event_created_at:desc'
             axios.get('/event'+queryParams).then(response => {    
             const fetchEvents = response.data.data;

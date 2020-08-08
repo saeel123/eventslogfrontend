@@ -4,6 +4,10 @@ import Input from '../../components/Ui/Input/Input';
 import Spinner from '../../components/Spinner/Spinner';
 import DateTimePicker from 'react-datetime-picker';
 
+import { connect } from 'react-redux';
+import * as actionsCreators from  '../../store/actions/index';
+
+import RButton from 'react-bootstrap/Button';
 
 
 
@@ -19,36 +23,36 @@ class Search extends Component {
                 },
                 value: '',
             },
-            verbType: {
-                elementType: 'select',
-                elementConfig: {
-                    options: [
-                        {value: 'all', displayValue: 'All'},
-                        {value: 'create', displayValue: 'Fastest'},
-                        {value: 'destroy', displayValue: 'Destroy'},
-                        {value: 'published', displayValue: 'Published'},
-                        {value: 'unpublished', displayValue: 'Unpublished'}
-                    ]
-                },
-                value: 'fastest',
-                isValid: true,
-                touched: false
-            }
+            // verbType: {
+            //     elementType: 'select',
+            //     elementConfig: {
+            //         options: [
+            //             {value: 'all', displayValue: 'All'},
+            //             {value: 'create', displayValue: 'Fastest'},
+            //             {value: 'destroy', displayValue: 'Destroy'},
+            //             {value: 'published', displayValue: 'Published'},
+            //             {value: 'unpublished', displayValue: 'Unpublished'}
+            //         ]
+            //     },
+            //     value: 'fastest',
+            //     isValid: true,
+            //     touched: false
+            // }
         },
         loading: false,
         formIsValid: false,
-        toDateTime: new Date(),
-        fromDateTime: new Date(),
+        toDateTime: null,
+        fromDateTime: null,
 
     }
 
-    inputChangedHadler = (event, controlName) => {
+    inputChangedHadler = (value, controlName) => {
         const updatedControls = {
             ...this.state.controls,
             [controlName]: {
                 ...this.state.controls[controlName],
-                value: event.target.value,
-                isValid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
+                value: value,
+                isValid: this.checkValidity(value, this.state.controls[controlName].validation),
                 touched: true
             }
         }
@@ -79,20 +83,29 @@ class Search extends Component {
 
     }
 
+    resetHandler = (event) => {
+        event.preventDefault();
+        localStorage.removeItem('searchString');
+        localStorage.removeItem('toDateTime');
+        localStorage.removeItem('fromDateTime');
+        this.inputChangedHadler('', 'search')
+        this.props.onFetchEvents(1, 10);
+        this.onChangeFrom(null);
+        this.onChangeTo(null);        
+    }
+
 
     orderHandler = (event) => {
         event.preventDefault();
-        const search = this.state.controls.search.value;
-        const verbType = this.state.controls.verbType.value;
-        const toDate = null;
-        const fromDate = null;
-
-
-
-        console.log(search);
-        console.log(verbType);
         console.log(new Date(this.state.toDateTime).getTime() / 1000);
         console.log(new Date(this.state.fromDateTime).getTime() / 1000);
+
+        localStorage.setItem('searchString', this.state.controls.search.value);
+        localStorage.setItem('toDateTime', this.state.toDateTime);
+        localStorage.setItem('fromDateTime', this.state.fromDateTime);
+
+
+        this.props.onFetchEvents(1, 1);
     }
        
 
@@ -103,6 +116,27 @@ class Search extends Component {
 
     onChangeTo = (date) => {
         this.setState({ toDateTime: date })
+    }
+
+    componentDidMount() {
+        const searchString = localStorage.getItem('searchString');
+        const toDateTime = localStorage.getItem('toDateTime');
+        const fromDateTime = localStorage.getItem('fromDateTime');
+
+        if (searchString) {
+            this.inputChangedHadler(searchString, 'search')
+        }
+
+        if (toDateTime) {
+            this.onChangeTo(toDateTime)
+        }
+
+        if (fromDateTime) {
+            this.onChangeFrom(fromDateTime)
+        }
+
+        
+
     }
 
     render() {
@@ -121,7 +155,7 @@ class Search extends Component {
                         <Input  key={formElement.id}
                                 elementType={formElement.config.elementType} 
                                 elementConfig={formElement.config.elementConfig}  
-                                changed={(event) => this.inputChangedHadler(event, formElement.id)}
+                                changed={(event) => this.inputChangedHadler(event.target.value, formElement.id)}
                                 invalid={!formElement.config.isValid}
                                 touched={formElement.config.touched}
                                 shouldValidate={formElement.config.validation}
@@ -140,8 +174,10 @@ class Search extends Component {
                         value={this.state.toDateTime}
                         />
 
-
+                
                 <Button type="submit" btnType="Success">Submit</Button>
+                <RButton variant="danger" onClick={this.resetHandler}>Reset</RButton> 
+
             </form>
         );
 
@@ -162,4 +198,25 @@ class Search extends Component {
 
 }
 
-export default Search;
+
+const mapStateToProps = state => {
+    return {
+        events: state.event.events,
+        resultCount: state.event.resultCount,
+        totalCount: state.event.totalCount,
+        loading: state.event.loading,
+        pages: state.event.pages,
+        limit: state.event.limit,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onFetchEvents: (page, limit) => dispatch(actionsCreators.fetchEvents(page, limit))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);
+
+
+// export default Search;

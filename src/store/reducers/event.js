@@ -6,7 +6,7 @@ const initialState = {
     loading: false,
     resultCount: null,
     totalCount: null,
-    pages: null,
+    pages: 0,
     limit: null,
 }
 
