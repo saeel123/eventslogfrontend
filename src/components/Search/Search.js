@@ -41,8 +41,8 @@ class Search extends Component {
         },
         loading: false,
         formIsValid: false,
-        toDateTime: null,
-        fromDateTime: null,
+        toDateTime: '',
+        fromDateTime: '',
 
     }
 
@@ -90,28 +90,21 @@ class Search extends Component {
         localStorage.removeItem('fromDateTime');
         this.inputChangedHadler('', 'search')
         this.props.onFetchEvents(1, 10);
-        this.onChangeFrom(null);
-        this.onChangeTo(null);        
+        this.onChangeFrom('');
+        this.onChangeTo('');        
     }
 
 
     orderHandler = (event) => {
         event.preventDefault();
-        console.log(new Date(this.state.toDateTime).getTime() / 1000);
-        console.log(new Date(this.state.fromDateTime).getTime() / 1000);
-
         localStorage.setItem('searchString', this.state.controls.search.value);
         localStorage.setItem('toDateTime', this.state.toDateTime);
         localStorage.setItem('fromDateTime', this.state.fromDateTime);
-
-
-        this.props.onFetchEvents(1, 1);
+        this.props.onFetchEvents(1, 10);
     }
        
-
     onChangeFrom = (date) => {
         this.setState({ fromDateTime: date })
-
     }
 
     onChangeTo = (date) => {

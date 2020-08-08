@@ -27,18 +27,29 @@ export const fetchEventsStart = () => {
 
 export const fetchEvents = (page, limit) => {
     return dispatch => {
-
         dispatch(fetchEventsStart());
 
-        const searchString = localStorage.getItem('searchString');
-        const toDateTime = localStorage.getItem('toDateTime');
-        const fromDateTime = localStorage.getItem('fromDateTime');
+        let searchString = localStorage.getItem('searchString');
+        let toDateTime = localStorage.getItem('toDateTime');
+        let fromDateTime = localStorage.getItem('fromDateTime');
 
-        console.log(searchString);
-        console.log(toDateTime);
-        console.log(fromDateTime);
+        if (!searchString) {
+            searchString = ''
+        }
 
-        const queryParams = '?limit=' + limit + '&page=' + page + '&sortBy=event_created_at:desc'
+        if (toDateTime) {
+            toDateTime = new Date(toDateTime).getTime() / 1000;
+        }else {
+            toDateTime = ''
+        }
+
+        if (fromDateTime) {
+            fromDateTime = new Date(fromDateTime).getTime() / 1000;
+        }else {
+            fromDateTime = ''
+        }
+
+        const queryParams = '?limit=' + limit + '&page=' + page + '&sortBy=event_created_at:desc&startDate='+ fromDateTime +'&endDate='+ toDateTime +'&message='+searchString
             axios.get('/event'+queryParams).then(response => {    
             const fetchEvents = response.data.data;
             const resultCount = response.data.count;
