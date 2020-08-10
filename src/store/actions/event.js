@@ -60,3 +60,14 @@ export const fetchEvents = (page, limit) => {
         })
     }
 }
+
+
+export const syncEvents = () => {
+    return dispatch => {
+        axios.get('/syncevent').then(response => {    
+            dispatch(fetchEvents(1, 10));
+        }).catch(error => {
+            dispatch(fetchEventsFail(error));
+        })
+    }
+}

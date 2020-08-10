@@ -1,3 +1,4 @@
 export {
-    fetchEvents
+    fetchEvents,
+    syncEvents
 } from './event';
