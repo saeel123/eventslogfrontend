@@ -52,7 +52,10 @@ class Search extends Component {
         formIsValid: false,
         toDateTime: '',
         fromDateTime: '',
-
+        toDateMaxRange: new Date(),
+        toDateMinRange: '',
+        fromDateMaxRange: new Date(),
+        fromDateMinRange: '',
     }
 
     inputChangedHadler = (value, controlName) => {
@@ -100,27 +103,33 @@ class Search extends Component {
         this.inputChangedHadler('', 'search')
         this.props.onFetchEvents(1, 10);
         this.onChangeFrom('');
-        this.onChangeTo('');        
+        this.onChangeTo('');    
+        this.setState({toDateMaxRange: new Date()});  
+        this.setState({ fromDateMaxRange: new Date()});    
     }
 
 
-    orderHandler = (event) => {
+    filterEventHandler = (event) => {
         event.preventDefault();
-        localStorage.setItem('searchString', this.state.controls.search.value);
         localStorage.setItem('toDateTime', this.state.toDateTime);
         localStorage.setItem('fromDateTime', this.state.fromDateTime);
+        localStorage.setItem('searchString', this.state.controls.search.value);
         this.props.onFetchEvents(1, 10);
     }
        
     onChangeFrom = (date) => {
-        this.setState({ fromDateTime: date })
+        this.setState({ fromDateTime: date, toDateMinRange: date })
+        
     }
 
     onChangeTo = (date) => {
-        this.setState({ toDateTime: date })
+        this.setState({ toDateTime: date, fromDateMaxRange: date })
     }
 
     componentDidMount() {
+        localStorage.setItem('toDateTime', '');
+        localStorage.setItem('fromDateTime', '');
+
         const searchString = localStorage.getItem('searchString');
         const toDateTime = localStorage.getItem('toDateTime');
         const fromDateTime = localStorage.getItem('fromDateTime');
@@ -151,7 +160,7 @@ class Search extends Component {
         }
 
         let form =(
-            <form onSubmit={this.orderHandler}>
+            <form onSubmit={this.filterEventHandler}>
                 {
                     formElementArray.map(formElement => (
 
@@ -183,6 +192,9 @@ class Search extends Component {
                             <DateTimePicker
                                     onChange={this.onChangeFrom}
                                     value={this.state.fromDateTime}
+                                    maxDate={this.state.fromDateMaxRange}
+                                    minDate={this.state.fromDateMinRange}
+                                    clearIcon={null}
                                     />
                         </Col>
                     </Form.Group>
@@ -195,6 +207,9 @@ class Search extends Component {
                             <DateTimePicker
                                         onChange={this.onChangeTo}
                                         value={this.state.toDateTime}
+                                        maxDate={this.state.toDateMaxRange}
+                                        minDate	={this.state.toDateMinRange}
+                                        clearIcon={null}
                                         />
                         </Col>
                     </Form.Group>
