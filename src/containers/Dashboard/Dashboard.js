@@ -4,6 +4,7 @@ import './Dashboard.css';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import Alert from 'react-bootstrap/Alert';
 
 import { connect } from 'react-redux';
 import * as actionsCreators from  '../../store/actions/index';
@@ -12,7 +13,6 @@ import ReactPaginate from 'react-paginate';
 
 import Search from '../../components/Search/Search';
 import Navigation from '../../components/Navigation/Navigation';
-
 
 class Dashboard extends Component {
     componentDidMount() {
@@ -53,6 +53,12 @@ class Dashboard extends Component {
                             </tbody>
                         </Table>
                     </div>    
+
+            if(this.props.events.length === 0){
+                events = <Alert  variant={'danger'}>
+                                   No Events Found.Reset filter.
+                        </Alert>
+            }
         }
 
         return (
