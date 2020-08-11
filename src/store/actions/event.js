@@ -64,7 +64,8 @@ export const fetchEvents = (page, limit) => {
 
 export const syncEvents = () => {
     return dispatch => {
-        axios.get('/syncevent').then(response => {    
+        axios.post('/event/sync').then(response => {    
+            console.log(response);
             dispatch(fetchEvents(1, 10));
         }).catch(error => {
             dispatch(fetchEventsFail(error));
